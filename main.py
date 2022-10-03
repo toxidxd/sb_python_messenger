@@ -1,6 +1,3 @@
-import datetime
-
-
 def add_message(sender, text):
     new_message = {
         "sender": sender,
