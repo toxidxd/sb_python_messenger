@@ -1,4 +1,4 @@
-import flask
+from flask import Flask
 
 
 def add_message(sender, text):
