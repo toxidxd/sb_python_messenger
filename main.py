@@ -46,4 +46,4 @@ def hello_page():
     return "Wellcome to SkillMessenger"
 
 
-app.run()
+app.run(host="0.0.0.0", port=80)
