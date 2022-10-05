@@ -1,4 +1,12 @@
-from flask import Flask
+import flask
+
+
+def add_message(sender, text):
+    new_message = {
+        "sender": sender,
+        "text": text,
+        "time": "25:79" # TODO подставлять автоматом
+    }
 
 app = Flask(__name__) # Настройки приложения
 
