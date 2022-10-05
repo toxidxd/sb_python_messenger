@@ -39,7 +39,7 @@ def add_message(sender, text):
     }
     msg_id += 1
     all_messages.append(new_message)
-    save_messages()
+    save_messages()  # Сохраняем каждое сообщение
 
 
 # страница для получения списка сообщений
