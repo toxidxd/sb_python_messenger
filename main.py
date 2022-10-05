@@ -4,6 +4,7 @@ from datetime import datetime
 
 app = Flask(__name__, static_folder="./client", template_folder="client")  # Настройки приложения
 
+msg_id = 1
 all_messages = []
 
 
@@ -13,19 +14,23 @@ def chat_page():
 
 
 def add_message(sender, text):
+    global msg_id
     new_message = {
         "sender": sender,
         "text": text,
-        "time": datetime.now().strftime("%H:%M")
+        "time": datetime.now().strftime("%H:%M"),
+        "msg_id": msg_id
     }
-
+    msg_id += 1
     all_messages.append(new_message)
 
 
 # страница для получения списка сообщений
+# только новые сообщения: /get_messages?after=0
 @app.route("/get_messages")
 def get_messages():
-    return {"messages": all_messages}
+    after = int(request.args["after"])
+    return {"messages": all_messages[after:]}
 
 
 @app.route("/send_message")

@@ -28,14 +28,17 @@ async def send_message_click(e):
 
 # Загружает новые сообщения с сервера и отображает их
 async def load_fresh_messages():
-    result = await fetch("/get_messages", method="GET")
-    chat_window.innerHTML = ""  # Очищаем окно с сообщениями
-    append_message({"sender": "GOD", "text": "Welcome to toxidxd Chat", "time": "00:00"})
+    global last_seen_id
+    result = await fetch(f"/get_messages?after={last_seen_id}", method="GET")
+    # chat_window.innerHTML = ""  # Очищаем окно с сообщениями
+    # append_message({"sender": "GOD", "text": "Welcome to toxidxd Chat", "time": "00:00"})
     data = await result.json()
     all_messages = data["messages"]  # берем список сообщений из ответа сервера
     for msg in all_messages:
+        last_seen_id = msg["msg_id"]
         append_message(msg)
-    set_timeout(5, load_fresh_messages)  # Загружаем сообщения через 1 секунду
+
+    set_timeout(1, load_fresh_messages)  # Загружаем сообщения через 1 секунду
 
 # Устанавливаем действие при клике
 send_message.onclick = send_message_click
