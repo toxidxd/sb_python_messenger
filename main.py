@@ -1,16 +1,40 @@
-from flask import Flask
+from flask import Flask, request
+from datetime import datetime
+
+
+app = Flask(__name__) # Настройки приложения
+all_messages = []
 
 
 def add_message(sender, text):
     new_message = {
         "sender": sender,
         "text": text,
-        "time": "25:79" # TODO подставлять автоматом
+        "time": datetime.now().strftime("%H:%M")
     }
 
-app = Flask(__name__) # Настройки приложения
+    all_messages.append(new_message)
 
-@app.route("/hello")
+
+add_message("mike", "test1")
+add_message("john", "test2")
+
+
+# страница для получения списка сообщений
+@app.route("/get_messages")
+def get_messages():
+    return {"messages": all_messages}
+
+
+@app.route("/send_message")
+def send_message():
+    sender = request.args["sender"]
+    text = request.args["text"]
+    add_message(sender, text)
+    return {"result": True}
+
+
+@app.route("/")
 def hello_page():
     return "Wellcome to SkillMessenger"
 
