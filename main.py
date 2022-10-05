@@ -1,9 +1,15 @@
-from flask import Flask, request
+from flask import Flask, request, render_template
 from datetime import datetime
 
 
-app = Flask(__name__) # Настройки приложения
+app = Flask(__name__, static_folder="./client", template_folder="client")  # Настройки приложения
+
 all_messages = []
+
+
+@app.route("/chat")
+def chat_page():
+    return render_template("chat.html")
 
 
 def add_message(sender, text):
