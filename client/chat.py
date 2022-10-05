@@ -49,4 +49,5 @@ async def message_keypress(event):
 
 # Устанавливаем действие при клике
 send_message.onclick = send_message_click
+message_text.onkeypress = message_keypress
 load_fresh_messages()
