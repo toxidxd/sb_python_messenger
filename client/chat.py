@@ -6,7 +6,7 @@ send_message = document.getElementById("send_message")
 sender = document.getElementById("sender")
 message_text = document.getElementById("message_text")
 chat_window = document.getElementById("chat_window")
-
+emoji_selector = document.getElementById("emoji_selector")
 
 # Добавляет новое сообщение в список сообщений
 def append_message(message):
@@ -22,7 +22,8 @@ def append_message(message):
 # Вызывается при клике на send_message
 async def send_message_click(e):
     # Отправить запрос к странице /send_message
-    await fetch(f"/send_message?sender={sender.value}&text={message_text.value}", method="GET")
+    sender_full_name = emoji_selector.value + sender.value
+    await fetch(f"/send_message?sender={sender_full_name}&text={message_text.value}", method="GET")
     message_text.value = ""
 
 
@@ -39,6 +40,12 @@ async def load_fresh_messages():
         append_message(msg)
 
     set_timeout(1, load_fresh_messages)  # Загружаем сообщения через 1 секунду
+
+
+async def message_keypress(event):
+    console.log(event.code)
+    if event.code == "Enter":
+        await send_message_click(event)
 
 # Устанавливаем действие при клике
 send_message.onclick = send_message_click

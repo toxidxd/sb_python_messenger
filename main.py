@@ -1,11 +1,27 @@
 from flask import Flask, request, render_template
 from datetime import datetime
-
+import json
 
 app = Flask(__name__, static_folder="./client", template_folder="client")  # Настройки приложения
 
 msg_id = 1
-all_messages = []
+
+DB_FILE = "db.json"
+
+
+def load_messages():
+    with open(DB_FILE, "r") as json_file:
+        data = json.load(json_file)
+        return data["messages"]
+
+
+all_messages = load_messages()
+
+
+def save_messages():
+    with open(DB_FILE, "w") as json_file:
+        data = {"messages": all_messages}
+        json.dump(data, json_file)
 
 
 @app.route("/chat")
@@ -23,6 +39,7 @@ def add_message(sender, text):
     }
     msg_id += 1
     all_messages.append(new_message)
+    save_messages()
 
 
 # страница для получения списка сообщений
@@ -47,3 +64,4 @@ def hello_page():
 
 
 app.run(host="0.0.0.0", port=80)
+# app.run()
